@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>КБЖУ</title>
+    <style>
+        body {
+            font-family: 'asd';
+            background-color: #181818;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: normal;
+            margin: 15;
+            padding: 0;
+        }
+
+        #calories-bar {
+            width: 100%;
+            height: 10px;
+            background: #222222;
+            border-radius: 10px;
+            margin: 0px 0;
+            position: relative;
+        }
+
+        #calories-fill {
+            height: 100%;
+            background-color: #68B96A;
+            border-radius: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .macros {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        .macro-bar {
+            width: 100%;
+            height: 10px; /* Тоньше полоски */
+            background: #222222;
+            border-radius: 10px;
+            margin: 2px 0;
+            position: relative;
+        }
+
+        .macro-fill {
+            height: 100%;
+            border-radius: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .macro-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            margin-bottom: 2px;
+            margin-left: 3px;
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+
+        .input-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Расстояние между полями */
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #222222;
+            color: white;
+            width: 100px;
+            text-align: center;
+        }
+        .record {
+    background: #222222;
+    border-radius: 15px;
+    padding: 5px; /* Отступы для визуальной привлекательности */
+    margin: 1px 0;
+    display: flex;
+    justify-content: space-between; /* Разделяем текст и кнопки */
+    align-items: center;
+    width: 90%; /* Ширина записи равна ширине контейнера */
+}
+
+.record span {
+    flex-grow: 1; /* Занимает доступное пространство */
+    text-align: left; /* Текст записи будет слева */
+}
+
+.record button {
+    margin-left: 10px; /* Отступы между кнопками */
+}
+
+
+        
+       /* .records-header {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            visibility: hidden;
+        } 
+        */
+
+        .records-container {
+    display: flex; /* Flex-контейнер для выравнивания по центру */
+    flex-direction: column; /* Выравнивание по вертикали */
+    align-items: center; /* Центрируем записи по горизонтали */
+    width: 100%;
+    max-width: 400px;
+    overflow-y: auto; /* Убедитесь, что прокрутка есть только при необходимости */
+    max-height: 300px;
+    border-radius: 10px;
+    padding: 0px;
+    background: #222222;
+    margin: 0 auto; /* Центрируем сам контейнер */
+}
+
+        button {
+            margin-top: 10px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            margin: 4px 2px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="macro-info">
+    <span id="calories-left" style="margin-bottom: 4px;" >Можно сьесть еще 1840 калорий</span>
+</div>
+<div id="calories-bar">
+    <div id="calories-fill" style="width: 0%;"></div>
+</div>
+<div class="macro-info">
+    <span id="calories-used" style="color: #68B96A; font-size: 14px; margin-top: 6px;">0 полученные калории</span>
+    <span id="calories-all" style="margin-top: 6px; font-size: 14px;">Цель: 1840</span>
+</div>
+
+<div class="macros">
+    <div class="macro-info">
+        <span id="protein-used">Белки: сьедено 0</span>
+        <span id="protein-left">осталось 138</span>
+    </div>
+    <div class="macro-bar" id="protein-bar">
+        <div class="macro-fill" id="protein-fill" style="background-color: rgba(67, 167, 250, 0.973); width: 0%;"></div>
+    </div>
+
+    <div class="macro-info">
+        <span id="fat-used">Жиры: сьедено 0</span>
+        <span id="fat-left">осталось 69</span>
+    </div>
+    <div class="macro-bar" id="fat-bar">
+        <div class="macro-fill" id="fat-fill" style="background-color: rgba(254, 110, 61, 0.973); width: 0%;"></div>
+    </div>
+
+    <div class="macro-info">
+        <span id="carb-used">Углеводы: сьедено 0</span>
+        <span id="carb-left">Осталось 276</span>
+    </div>
+    <div class="macro-bar" id="carb-bar">
+        <div class="macro-fill" id="carb-fill" style="background-color: rgba(229, 68, 122, 0.973); width: 0%;"></div>
+    </div>
+</div>
+
+<div class="input-container">
+    <div class="input-row">
+        <input type="number" id="protein-input" value="" placeholder="Белки">
+        <input type="number" id="fat-input" value="" placeholder="Жиры">
+        <input type="number" id="carb-input" value="" placeholder="Углеводы">
+    </div>
+    <div class="checkbox-label">
+        <input type="checkbox" id="training-day" onchange="toggleTrainingDay()">
+        <label for="training-day">День тренировки</label>
+    </div>
+    <button onclick="addRecord()">Добавить</button>
+</div>
+
+
+<div class="records-container" id="records-container">
+
+    <script>
+        let records = JSON.parse(localStorage.getItem('records')) || [];
+        let totalMacros = JSON.parse(localStorage.getItem('totalMacros')) || { protein: 0, fat: 0, carb: 0 };
+        const limits = {
+            training: { protein: 138, fat: 69, carb: 276, calories: 2339 },
+            rest: { protein: 152, fat: 55, carb: 172, calories: 1840 }
+        };
+        let isTrainingDay = JSON.parse(localStorage.getItem('isTrainingDay')) || false;
+        let editingIndex = null;
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTable();
+            updateUI();
+            document.getElementById('training-day').checked = isTrainingDay;
+        });
+    
+        function toggleTrainingDay() {
+            isTrainingDay = document.getElementById('training-day').checked;
+            localStorage.setItem('isTrainingDay', JSON.stringify(isTrainingDay));
+            updateUI();
+        }
+    
+        function addRecord() {
+            const protein = parseInt(document.getElementById('protein-input').value) || 0;
+            const fat = parseInt(document.getElementById('fat-input').value) || 0;
+            const carb = parseInt(document.getElementById('carb-input').value) || 0;
+    
+            if (editingIndex !== null) {
+                totalMacros.protein -= records[editingIndex].protein;
+                totalMacros.fat -= records[editingIndex].fat;
+                totalMacros.carb -= records[editingIndex].carb;
+    
+                records[editingIndex] = { protein, fat, carb, time: records[editingIndex].time };
+    
+                totalMacros.protein += protein;
+                totalMacros.fat += fat;
+                totalMacros.carb += carb;
+    
+                editingIndex = null;
+                document.querySelector('button').textContent = 'Добавить';
+            } else {
+                records.push({ protein, fat, carb, time: new Date().toLocaleTimeString() });
+    
+                totalMacros.protein += protein;
+                totalMacros.fat += fat;
+                totalMacros.carb += carb;
+            }
+    
+            localStorage.setItem('records', JSON.stringify(records));
+            localStorage.setItem('totalMacros', JSON.stringify(totalMacros));
+    
+            updateTable();
+            updateUI();
+            resetInputs();
+        }
+    
+        function updateTable() {
+            const container = document.getElementById('records-container');
+            container.innerHTML = ''; 
+            records.forEach((record, index) => {
+                const div = document.createElement('div');
+                div.className = 'record';
+                div.innerHTML = `
+                    <span style="font-size: 14px">${record.time} - ${record.protein} | ${record.fat} | ${record.carb} |</span>
+                    <button onclick="editRecord(${index})">Изменить</button>
+                    <button onclick="deleteRecord(${index})">Удалить</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+    
+        function editRecord(index) {
+            const record = records[index];
+            document.getElementById('protein-input').value = record.protein;
+            document.getElementById('fat-input').value = record.fat;
+            document.getElementById('carb-input').value = record.carb;
+    
+            editingIndex = index;
+            document.querySelector('button').textContent = 'Сохранить';
+        }
+    
+        function deleteRecord(index) {
+            const record = records[index];
+            totalMacros.protein -= record.protein;
+            totalMacros.fat -= record.fat;
+            totalMacros.carb -= record.carb;
+    
+            records.splice(index, 1);
+    
+            localStorage.setItem('records', JSON.stringify(records));
+            localStorage.setItem('totalMacros', JSON.stringify(totalMacros));
+    
+            updateTable();
+            updateUI();
+        }
+    
+        function resetInputs() {
+            document.getElementById('protein-input').value = '';  
+            document.getElementById('fat-input').value = '';     
+            document.getElementById('carb-input').value = '';     
+        }
+    
+        function updateUI() {
+            const limitsToUse = isTrainingDay ? limits.training : limits.rest;
+    
+            const proteinPercent = (totalMacros.protein / limitsToUse.protein) * 100;
+            const fatPercent = (totalMacros.fat / limitsToUse.fat) * 100;
+            const carbPercent = (totalMacros.carb / limitsToUse.carb) * 100;
+            const calories = (totalMacros.protein * 4) + (totalMacros.fat * 9) + (totalMacros.carb * 4);
+            const caloriesPercent = (calories / limitsToUse.calories) * 100;
+    
+            document.getElementById('protein-fill').style.width = `${proteinPercent}%`;
+            document.getElementById('fat-fill').style.width = `${fatPercent}%`;
+            document.getElementById('carb-fill').style.width = `${carbPercent}%`;
+            document.getElementById('calories-fill').style.width = `${caloriesPercent}%`;
+    
+            document.getElementById('protein-used').textContent = `Белки: сьедено ${totalMacros.protein}`;
+            document.getElementById('protein-left').textContent = `осталось ${limitsToUse.protein - totalMacros.protein}`;
+    
+            document.getElementById('fat-used').textContent = `Жиры: сьедено ${totalMacros.fat}`;
+            document.getElementById('fat-left').textContent = `осталось ${limitsToUse.fat - totalMacros.fat}`;
+    
+            document.getElementById('carb-used').textContent = `Углеводы: сьедено ${totalMacros.carb}`;
+            document.getElementById('carb-left').textContent = `осталось ${limitsToUse.carb - totalMacros.carb}`;
+    
+            document.getElementById('calories-used').textContent = `${Math.round(calories)} полученные калории`;
+            document.getElementById('calories-all').textContent = `Цель: ${limitsToUse.calories}`;
+            document.getElementById('calories-left').textContent = `Можно сьесть ещё ${limitsToUse.calories - calories} калорий`;
+        }
+    </script>
+    
+     </body> 
+     </html>
