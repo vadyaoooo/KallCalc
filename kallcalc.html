@@ -206,6 +206,7 @@
         <label for="training-day">День тренировки</label>
     </div>
     <button onclick="addRecord()">Добавить</button>
+
 </div>
 
 
@@ -306,6 +307,18 @@
             updateTable();
             updateUI();
         }
+
+        function clearAllRecords() {
+        if (confirm('Вы уверены, что хотите удалить все записи?')) {
+            records = [];
+            totalMacros = { protein: 0, fat: 0, carb: 0 };
+            localStorage.removeItem('records');
+            localStorage.removeItem('totalMacros');
+            updateTable();
+            updateUI();
+        }   
+        }
+
     
         function resetInputs() {
             document.getElementById('protein-input').value = '';  
@@ -341,6 +354,10 @@
             document.getElementById('calories-left').textContent = `Можно сьесть ещё ${limitsToUse.calories - calories} калорий`;
         }
     </script>
+    </div>
+    <div class="input-container">
+        <button onclick="clearAllRecords()">Удалить все</button>
+    </div>
     
      </body> 
      </html>
