@@ -197,9 +197,9 @@
 
 <div class="input-container">
     <div class="input-row">
-        <input type="number" id="protein-input" value="" placeholder="Белки">
-        <input type="number" id="fat-input" value="" placeholder="Жиры">
-        <input type="number" id="carb-input" value="" placeholder="Углеводы">
+        <input type="number" id="protein-input" value="" placeholder="Белки" pattern="[0-9]*">
+        <input type="number" id="fat-input" value="" placeholder="Жиры" pattern="[0-9]*">
+        <input type="number" id="carb-input" value="" placeholder="Углеводы" pattern="[0-9]*">
     </div>
     <div class="checkbox-label">
         <input type="checkbox" id="training-day" onchange="toggleTrainingDay()">
