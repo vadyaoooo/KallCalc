@@ -275,7 +275,7 @@
                 const div = document.createElement('div');
                 div.className = 'record';
                 div.innerHTML = `
-                    <span style="font-size: 14px">${record.time} - ${record.protein} | ${record.fat} | ${record.carb} | (${record.carb/14})</span>
+                    <span style="font-size: 14px">${record.time} - ${record.protein} | ${record.fat} | ${record.carb} | (${(record.carb/14).toFixed(2)})</span>
                     <button onclick="editRecord(${index})">Изменить</button>
                     <button onclick="deleteRecord(${index})">Удалить</button>
                 `;
