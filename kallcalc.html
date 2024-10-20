@@ -275,7 +275,10 @@
                 const div = document.createElement('div');
                 div.className = 'record';
                 div.innerHTML = `
-                    <span style="font-size: 12px">${record.time} - ${record.protein} | ${record.fat} | ${record.carb} (${((record.carb/14)*2).toFixed(2)})</span>
+                    <span style="font-size: 12px; color: rgba(254, 110, 61, 0.973)" >${record.fat}</span>
+                    <span style="font-size: 12px; color: rgba(229, 68, 122, 0.973)" >${record.carb}</span>
+                    <span style="font-size: 12px; color: rgba(67, 167, 250, 0.973)" >${record.protein}</span>
+                    <span style="font-size: 12px;">(${((record.carb/14)*2).toFixed(2)})</span>
                     <button onclick="editRecord(${index})">Изменить</button>
                     <button onclick="deleteRecord(${index})">Удалить</button>
                 `;
